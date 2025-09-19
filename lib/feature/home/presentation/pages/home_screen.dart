@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen>
     return Column(
       children: [
         Text(
-          'Hi there!',
+          'Hello there',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
