@@ -23,16 +23,11 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  void _onChangeBackgroundColor() {
+  void _onTap() {
     context.read<HomeBloc>().add(const HomeEvent.changeBackgroundColor());
-  }
-
-  void _onIncrementTapCounter() {
     context.read<HomeBloc>().add(const HomeEvent.incrementTapCounter());
-  }
-
-  void _onLoadColorsHistory() {
     context.read<HomeBloc>().add(const HomeEvent.loadColorsHistory());
+    _animationController.forward();
   }
 
   @override
@@ -44,24 +39,13 @@ class _HomeScreenState extends State<HomeScreen>
             duration: const Duration(milliseconds: 200),
             color: state.backgroundColor,
             child: InkWell(
-              onTap: () {
-                _onChangeBackgroundColor();
-                _onIncrementTapCounter();
-                _onLoadColorsHistory();
-                _animationController.forward();
-              },
+              onTap: () => _onTap(),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildText(
-                      state.backgroundColor,
-                      state.tapCounter,
-                      state.colorsHistory,
-                      state,
-                    ),
+                    _buildText(state),
                     const SizedBox(height: 20),
-
                     _buildColorHistory(state.colorsHistory),
                   ],
                 ),
@@ -73,12 +57,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget _buildText(
-    Color color,
-    int tapCouter,
-    List<Color> colorsHistory,
-    HomeState state,
-  ) {
+  Widget _buildText(HomeState state) {
     return Column(
       children: [
         Text(
@@ -109,10 +88,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Color _buildContrastColor(Color color) {
-    return color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
-  }
-
   Widget _buildColorHistory(List<Color> colors) {
     return colors.isNotEmpty
         ? SizedBox(
@@ -134,5 +109,9 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           )
         : const SizedBox.shrink();
+  }
+
+  Color _buildContrastColor(Color color) {
+    return color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
   }
 }
